@@ -1,0 +1,48 @@
+
+<div class="mb-10 bg-gray-900 text-white">
+  
+    <div class="bg-gray-800 text-white p-6 rounded-lg shadow-lg mx-auto w-full max-w-4xl">
+      <h2 class="text-3xl font-bold text-indigo-400 mb-6">Your Watchlist</h2>
+    
+      <div *ngIf="errorMessage" class="bg-red-600 text-white p-3 rounded-lg mb-4">
+        <p>{{ errorMessage }}</p>
+      </div>
+    
+      <div *ngIf="watchlistItems.length > 0; else emptyWatchlist">
+        <table class="w-full table-auto border-collapse">
+          <thead class="ACbg-gray-700 text-gray-200">
+            <tr>
+              <th class="px-4 py-3 text-left text-sm font-semibold">Product</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold">Price</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of watchlistItems" class="border-t border-gray-700 hover:bg-gray-750 transition-colors">
+              <td class="px-4 py-3">
+                <div class="flex items-center space-x-4">
+                  <img [src]="item.imageUrl" alt="{{ item.description }}" class="h-12 w-12 rounded-md shadow-sm">
+                  <p class="text-gray-200 font-medium">{{ item.description }}</p>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-gray-300">${{ item.retailPrice | number: '1.2-2' }}</td>
+              <td class="px-4 py-3">
+                <button
+                  class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md shadow-md transition-transform transform hover:scale-105"
+                  (click)="removeFromWatchlist(item.id)">
+                  Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    
+      <ng-template #emptyWatchlist>
+        <div class="text-center py-6">
+          <p class="text-lg text-gray-400">Your watchlist is currently empty.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  

@@ -1,0 +1,49 @@
+<div class="bg-gray-900 text-gray-100 px-6 py-12">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Most Frequently Purchased -->
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold mb-6 text-blue-400">Most Frequently Purchased</h2>
+        <div class="space-y-4">
+          <div
+            *ngFor="let item of topFrequentlyPurchased"
+            class="flex items-center space-x-4 bg-gray-700 p-4 rounded-lg shadow-md">
+            <img
+              [src]="item.imageUrl"
+              alt="{{ item.description }}"
+              class="w-20 h-20 object-cover rounded-md">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-100">{{ item.description }}</h3>
+              <p class="text-sm text-gray-300">
+                <span class="text-green-400 font-bold">${{ item.retailPrice | number: '1.2-2' }}</span>
+                <span class="text-gray-400">(Wholesale: ${{ item.wholesalePrice | number: '1.2-2' }})</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Most Recently Purchased -->
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold mb-6 text-blue-400">Most Recently Purchased</h2>
+        <div class="space-y-4">
+          <div
+            *ngFor="let item of topRecentlyPurchased"
+            class="flex items-center space-x-4 bg-gray-700 p-4 rounded-lg shadow-md">
+            <img
+              [src]="item.imageUrl"
+              alt="{{ item.description }}"
+              class="w-20 h-20 object-cover rounded-md">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-100">{{ item.description }}</h3>
+              <p class="text-sm text-gray-300">
+                <span class="text-green-400 font-bold">${{ item.retailPrice | number: '1.2-2' }}</span>
+                <span class="text-gray-400">(Wholesale: ${{ item.wholesalePrice | number: '1.2-2' }})</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

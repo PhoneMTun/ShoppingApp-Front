@@ -1,0 +1,12 @@
+.pagination button {
+  transition: transform 0.2s ease;
+}
+
+.pagination button:hover {
+  transform: scale(1.1);
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,59 @@
+<app-sidebar (cartToggle)="toggleCart()"></app-sidebar>
+<app-add-to-cart [isVisible]="isCartVisible"></app-add-to-cart>
+<div class="min-h-screen bg-gradient-to-bl from-gray-900 to-gray-800 text-gray-100">
+    <div>
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-4 py-3 rounded-lg shadow-lg flex justify-between items-center space-x-4 animate-slideInDown">
+        <span>{{ errorMessage }}</span>
+        <button
+          (click)="closeErrorMessage()"
+          class="text-white bg-red-700 hover:bg-red-800 px-3 py-1 rounded-full focus:outline-none shadow-md transition-transform transform hover:scale-105">
+          Close
+        </button>
+      </div>
+      
+      <!-- Confirmation Page -->
+      <div class="bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-3xl shadow-2xl max-w-5xl mx-auto ">
+        <h2 class="text-4xl font-extrabold mb-8 text-center text-indigo-400 tracking-wider">
+          Order Confirmation
+        </h2>
+        
+        <!-- Order Items -->
+        <ul class="divide-y divide-gray-700">
+          <li *ngFor="let item of cartItems" class="py-6 flex items-center gap-4 animate-fadeIn">
+            <img [src]="item.imageUrl" alt="{{ item.description }}" class="h-20 w-20 rounded-lg shadow-md border border-gray-700">
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-white tracking-wide">{{ item.description }}</h3>
+              <p class="text-sm text-gray-400">Price: <span class="font-medium text-indigo-400">${{ item.retailPrice | number: '1.2-2' }}</span></p>
+              <p class="text-sm text-gray-400">Quantity: <span class="font-medium text-indigo-400">{{ item.quantity }}</span></p>
+            </div>
+            <p class="text-lg font-bold text-indigo-400">
+              ${{ (item.retailPrice * item.quantity) | number: '1.2-2' }}
+            </p>
+          </li>
+        </ul>
+      
+        <!-- Summary Section -->
+        <div class="mt-8 bg-gray-900 p-6 rounded-lg shadow-md">
+          <div class="flex justify-between items-center">
+            <h3 class="text-2xl font-semibold text-white tracking-wide">Subtotal</h3>
+            <p class="text-2xl font-extrabold text-green-400">
+              ${{ subtotal | number: '1.2-2' }}
+            </p>
+          </div>
+        </div>
+      
+        <!-- Confirmation Button -->
+        <div class="mt-8 text-center">
+          <button
+            (click)="confirmOrder()"
+            class="px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full shadow-lg hover:from-green-600 hover:to-green-500 hover:shadow-xl transition-all transform hover:scale-110">
+            Confirm Order
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<!-- Error Message -->
+

@@ -1,0 +1,91 @@
+<app-sidebar (cartToggle)="toggleCart()"></app-sidebar>
+<app-add-to-cart [isVisible]="isCartVisible"></app-add-to-cart>
+    <div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100 px-6 py-12">
+        <div class="max-w-4xl mx-auto animate-fadeIn">
+          <!-- Error Message -->
+          <div
+            *ngIf="errorMessage"
+            class="bg-red-600 text-white px-4 py-3 rounded-lg shadow-lg mb-6 flex justify-between items-center animate-slideDown">
+            <span>{{ errorMessage }}</span>
+            <button
+              (click)="errorMessage = null"
+              class="bg-red-800 hover:bg-red-700 px-2 py-1 rounded text-sm transition-transform transform hover:scale-105">
+              Close
+            </button>
+          </div>
+      
+          <!-- Order Details -->
+          <h1 class="text-5xl font-extrabold mb-8 text-center text-indigo-400 animate-pulse">Order Details</h1>
+          <div *ngIf="order" class="bg-gray-800 p-6 rounded-lg shadow-2xl transition-transform transform hover:scale-105">
+            <div class="flex items-center mb-6">
+              <div>
+                <p class="text-lg font-semibold">Order ID: <span class="text-indigo-400">{{ order.id }}</span></p>
+                <p class="text-lg font-semibold">Status: 
+                  <span
+                    [ngClass]="{
+                      'text-green-400': order.status === 'COMPLETED',
+                      'text-yellow-400': order.status === 'PENDING',
+                      'text-red-400': order.status === 'CANCELED'
+                    }">
+                    {{ order.status }}
+                  </span>
+                </p>
+              </div>
+            </div>
+    
+            <p class="text-lg font-semibold">Order Date: <span class="text-indigo-400">{{ order.orderTime | date }}</span></p>
+            <p class="text-lg font-semibold mb-6">Customer: 
+              <span class="text-indigo-400">{{ order.user.username }}</span>
+              ({{ order.user.email }})
+            </p>
+      
+            <!-- Order Items -->
+            <h2 class="text-3xl font-semibold mb-4 text-indigo-400 border-b border-gray-600 pb-2">Items:</h2>
+            <div *ngFor="let item of order.orderItems" class="mb-4 animate-fadeIn">
+              <div
+                class="p-4 bg-gray-700 rounded-lg shadow-md flex justify-between items-center transition-transform transform hover:scale-105">
+                <div class="flex items-center">
+                  <img [src]="item.product.imageUrl" alt="{{ item.product.description }}" class="w-16 h-16 rounded-lg mr-4">
+                  <div>
+                    <p class="font-semibold">Product: 
+                      <span class="text-indigo-400">{{ item.product.description }}</span>
+                    </p>
+                    <p>Price at Purchase: <span class="text-indigo-400">${{ item.priceAtPurchase | number: '1.2-2' }}</span></p>
+                    <p>Quantity: <span class="text-indigo-400">{{ item.quantity }}</span></p>
+                  </div>
+                </div>
+                <a
+                  [routerLink]="['/product', item.product.id]"
+                  class="text-indigo-400 hover:underline transition-opacity hover:opacity-80">
+                  View Product
+                </a>
+              </div>
+            </div>
+      
+            <!-- Total Amount -->
+            <div class="mt-6 text-right">
+              <p class="text-2xl font-bold text-indigo-400">
+                Total Amount: 
+                <span class="text-green-400">
+                  ${{ calculateTotalAmount() | number: '1.2-2' }}
+                </span>
+              </p>
+            </div>
+      
+            <!-- Cancel Button -->
+            <button
+              *ngIf="order.status !== 'CANCELED'"
+              (click)="cancelOrder()"
+              class="mt-6 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-lg transition-transform transform hover:scale-110">
+              Cancel Order
+            </button>
+          </div>
+      
+          <!-- Loading State -->
+          <div *ngIf="!order && !errorMessage" class="text-center animate-bounce">
+            <p class="text-xl text-indigo-400">Loading order details...</p>
+          </div>
+        </div>
+      </div>
+
+    

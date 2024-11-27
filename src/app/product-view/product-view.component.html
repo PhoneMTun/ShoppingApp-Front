@@ -1,0 +1,54 @@
+<app-sidebar (cartToggle)="toggleCart()"></app-sidebar>
+<app-add-to-cart [isVisible]="isCartVisible"></app-add-to-cart>
+<div class="min-h-screen bg-gray-900 text-gray-100 px-6 py-12">
+    <div class="max-w-6xl mx-auto animate-fadeIn">
+      <h1 class="text-5xl font-extrabold text-indigo-400 text-center mb-10 animate-pulse">Product Details</h1>
+  
+      <!-- Error Message Pop-Up -->
+      <div *ngIf="errorMessage" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-4 py-3 rounded-lg shadow-lg flex justify-between items-center space-x-4 animate-slideDown">
+        <p>{{ errorMessage }}</p>
+        <button
+          (click)="errorMessage = null"
+          class="text-white bg-red-700 hover:bg-red-800 px-3 py-1 rounded focus:outline-none shadow-md">
+          Close
+        </button>
+      </div>
+  
+      <!-- Product Details -->
+      <div *ngIf="product" class="bg-gray-800 p-8 rounded-lg shadow-xl transform transition-all hover:scale-105 animate-zoomIn">
+        <div class="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-6 mb-8">
+          <img [src]="product.imageUrl" alt="{{ product.description }}" class="w-64 h-64 rounded-lg shadow-lg transform transition-transform hover:scale-110">
+          <div class="text-center md:text-left">
+            <h2 class="text-4xl font-bold text-green-400">{{ product.description }}</h2>
+            <p class="text-xl text-gray-400 mt-2">Created At: {{ product.createdAt | date }}</p>
+          </div>
+        </div>
+  
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="text-2xl font-bold mb-4 text-indigo-400">Pricing</h3>
+            <p class="text-lg">Retail Price: <span class="text-green-400">${{ product.retailPrice }}</span></p>
+            <p class="text-lg">Wholesale Price: <span class="text-yellow-400">${{ product.wholesalePrice }}</span></p>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold mb-4 text-indigo-400">Stock Details</h3>
+            <p class="text-lg">Stock Quantity: <span class="text-green-400">{{ product.stockQuantity }}</span></p>
+          </div>
+        </div>
+  
+        <div class="mt-10 text-center">
+          <a
+            [routerLink]="['/products']"
+            class="px-8 py-4 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-lg shadow-lg transition-transform transform hover:scale-110">
+            Back to Products
+          </a>
+        </div>
+      </div>
+  
+      <!-- Loading State -->
+      <div *ngIf="!product && !errorMessage" class="text-center animate-bounce">
+        <p class="text-xl text-indigo-400">Loading product details...</p>
+      </div>
+    </div>
+  </div>
+  

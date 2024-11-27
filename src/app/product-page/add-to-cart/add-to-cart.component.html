@@ -1,0 +1,41 @@
+<div [ngClass]="getCartClasses()" class="fixed inset-y-0 right-0 w-96 bg-gray-800 text-white shadow-xl z-50">
+    <div class="p-4">
+      <h2 class="text-xl font-bold mb-4">Shopping Cart</h2>
+      <ul class="divide-y divide-gray-700">
+        <li *ngFor="let item of cartItems" class="py-4">
+          <div class="flex items-center">
+            <img [src]="item.imageUrl" alt="{{ item.description }}" class="h-12 w-12 rounded-md mr-4">
+            <div class="flex-1">
+              <p class="font-medium">{{ item.description }}</p>
+              <div class="flex items-center mt-2">
+                <button
+                  class="px-2 bg-gray-600 hover:bg-gray-500 text-white rounded-l-md"
+                  (click)="updateQuantity(item.id, item.quantity - 1)"
+                  [disabled]="item.quantity <= 1">
+                  -
+                </button>
+                <span class="px-3 text-gray-300">{{ item.quantity }}</span>
+                <button
+                  class="px-2 bg-gray-600 hover:bg-gray-500 text-white rounded-r-md"
+                  (click)="updateQuantity(item.id, item.quantity + 1)">
+                  +
+                </button>
+              </div>
+            </div>
+            <button
+              class="ml-4 px-3 py-1 bg-red-600 hover:bg-red-500 text-white rounded-md"
+              (click)="removeFromCart(item.id)">
+              Remove
+            </button>
+          </div>
+        </li>
+      </ul>
+      <div class="mt-4">
+        <p class="text-lg font-bold">Subtotal: ${{ subtotal | number: '1.2-2' }}</p>
+        <button class="w-full mt-4 bg-indigo-600 hover:bg-indigo-500 text-white py-2 rounded-md" (click)="orderNow()">
+        Order Now
+      </button>
+      </div>
+    </div>
+  </div>
+  

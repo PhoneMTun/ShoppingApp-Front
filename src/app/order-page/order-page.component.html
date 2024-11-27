@@ -1,0 +1,98 @@
+<app-sidebar (cartToggle)="toggleCart()"></app-sidebar>
+<app-add-to-cart [isVisible]="isCartVisible"></app-add-to-cart>
+
+<div class="min-h-screen bg-gray-900 text-gray-100 px-6 py-12 flex justify-center">
+  
+
+  <!-- Main Content -->
+  <div class="w-full lg:w-2/3 bg-gray-800 p-6 rounded-lg shadow-lg">
+    <!-- Error Message -->
+    <div
+      *ngIf="errorMessage"
+      class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-4 py-3 rounded-lg shadow-lg flex justify-between items-center space-x-4">
+      <span>{{ errorMessage }}</span>
+      <button
+        (click)="closeErrorMessage()"
+        class="text-white bg-red-700 hover:bg-red-800 px-3 py-1 rounded focus:outline-none shadow-md">
+        Close
+      </button>
+    </div>
+
+    <!-- Orders Section -->
+    <h2 class="text-3xl font-semibold mb-6 text-center text-white">All Orders</h2>
+    <div *ngIf="!orders.length" class="text-center py-6">
+      <p class="text-gray-400 text-lg">No orders found.</p>
+    </div>
+    <div *ngIf="orders.length" class="overflow-x-auto">
+      <table class="w-full divide-y divide-gray-700">
+        <thead class="bg-gray-700">
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-300 uppercase">Order ID</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-300 uppercase">Date</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-300 uppercase">Status</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-300 uppercase">Total Amount</th>
+            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-300 uppercase">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-700">
+          <tr
+            *ngFor="let order of paginatedOrders"
+            class="hover:bg-gray-700 transition-colors duration-300">
+            <td class="px-6 py-4 text-sm text-gray-300">{{ order.id }}</td>
+            <td class="px-6 py-4 text-sm text-gray-300">{{ order.orderTime | date }}</td>
+            <td
+              class="px-6 py-4 text-sm font-bold"
+              [ngClass]="{
+                'text-green-400': order.status === 'Completed',
+                'text-red-400': order.status === 'Cancelled',
+                'text-yellow-400': order.status === 'Pending'
+              }">
+              {{ order.status }}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-300">
+              ${{ calculateTotalAmount(order.orderItems) | number: '1.2-2' }}
+            </td>
+            <td class="px-6 py-4 text-sm flex space-x-3">
+              <button
+                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded shadow-md transition-transform transform hover:scale-110"
+                (click)="cancelOrder(order.id)">Cancel</button>
+              <button
+                *ngIf="role === 'ADMIN'"
+                class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded shadow-md transition-transform transform hover:scale-110"
+                (click)="completeOrder(order.id)">Complete</button>
+              <a
+                [routerLink]="['/order', order.id, userId]"
+                class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow-md transition-transform transform hover:scale-110">View</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="flex justify-center items-center space-x-4 mt-6">
+        <button
+          class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded shadow"
+          [disabled]="currentPage === 1"
+          (click)="previousPage()"
+        >
+          Previous
+        </button>
+        <button
+          *ngFor="let page of paginationArray"
+          class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded shadow"
+          [ngClass]="{ 'bg-blue-500 text-white font-bold': currentPage === page }"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+        <button
+          class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded shadow"
+          [disabled]="currentPage === totalPages"
+          (click)="nextPage()"
+        >
+          Next
+        </button>
+      </div>
+  </div>
+  
+
+</div>
